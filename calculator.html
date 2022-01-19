@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+
+  <link rel="stylesheet"  href="./calculator.css">
+  
+  <title>Frontend Mentor | Calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body>
+  <div id="bodyy">
+    <div id="content">
+      <section id='top'>
+        <div id='brand'>
+           <p>calc</p>
+        </div>
+    
+        <div id='switch'>
+          <div id='theme'>
+            <p>THEME</p>
+          </div>
+          <div id=mainSwitch>
+            <div id=spanOne><p>1</p><p>2</p><p>3</p></div>
+            <div id='button'>
+              <div id='spanTwo'><p class='switchbut' id='switchbutone'></p><p class='switchbut' id='switchbuttwo'></p><p class='switchbut' id='switchbutthree'></p></div>
+            </div>
+            
+            
+          </div>
+        </div>
+      </section>
+    
+      <section id='output'>
+        <input type="text", value='' id='outputText'>
+      </section>
+    <section id="numbers">
+      <div id="numOne"><p class='numeric' id= '7'>7</p><p class='numeric' id= '8'>8</p><p class='numeric' id= '9'>9</p><p id='delete'>DEL</p></div>
+      <div id="numTwo"><p class='numeric' id= '4'>4</p><p class='numeric' id= '5'>5</p><p class='numeric' id= '6'>6</p><p id='addition' class='operator'>+</p></div>
+      <div id="numThree"><p class='numeric' id= '1'>1</p><p class='numeric' id= '2'>2</p><p class='numeric' id= '3'>3</p><p id='subtraction' class='operator'>-</p></div>
+      <div id="numFour"><p>.</p><p class='numeric' id= '0'>0</p><p id='division' class='operator'>/</p><p id='multiplication' class='operator'>*</p></div>
+      <div id="numFive"><p id='reset'>RESET</p><p id='equal'>=</p></div>
+    </section>
+  
+    </div>
+  </div>
+  
+  <!-------section 1-->
+  
+
+  
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">kjay</a>.
+  </div>
+
+  <script>
+
+
+     let exp = [2,3,4,'*',4,5,'+',5,6,'-',3,4,6,7,'/',9,0]
+     
+     let arr = []
+     let c = 0;
+     exp= exp.join('')
+     const jay = exp.toString('')
+     console.log(jay)
+     function check(){
+         
+      for(let i=0; i<exp.length;i++){
+        
+       if(['*','+','/','-'].includes(exp[i])){
+        console.log(exp[i])
+        let e= exp.slice(c,i);
+        /*let b  = e.join('');
+        let d = b.toString('');*/
+         arr.push(parseInt(e))
+         arr.push(exp[i])
+         c = i+1
+       }
+
+       else if(i == exp.length-1){
+        let a= exp.slice(c,i+1)
+         arr.push(parseInt(a))
+         c = i+1
+       }
+       
+     }
+
+     console.log(arr)
+     }
+
+     check()
+     
+     
+
+   
+     let numHolder = {}
+     let numList = []
+     const num = document.querySelectorAll('.numeric')
+     const operators = document.querySelectorAll('.operator');
+     num.forEach(num => {
+      numHolder[num.id] = parseInt(num.id);
+     numList.push(num.id)
+     })
+
+      class calculator{
+        constructor(){
+        this.numbcontOne = []
+        this.numbcontTwo = []
+        }
+        inputNumber(inputNumber,output){
+        let show = document.getElementById(output);
+        let newNumber = show.value+inputNumber;
+        show.value = newNumber;
+        this.numbcontOne.push(inputNumber)
+        console.log(this.numbcontOne)
+        //return newNumber
+        } 
+
+        inputOpps(operation,output){
+          let show = document.getElementById(output);
+          const newVal = show.value+operation;
+          this.numbcontOne.push(operation)
+          show.value = newVal;
+          console.log(this.numbcontOne)
+          //return newVal
+        }
+
+        equal(output){
+          let d= 0; 
+          for(let i=0; i<this.numbcontOne.length; i++){
+           
+        if(['*','+','/','-'].includes(this.numbcontOne[i])){
+         console.log(this.numbcontOne[i])
+         let valj= this.numbcontOne.slice(d,i);
+         valj = valj.join('')
+         console.log(valj)
+          this.numbcontTwo.push(parseInt(valj))
+          this.numbcontTwo.push(this.numbcontOne[i])
+          d = i+1
+        }
+ 
+        else if(i == this.numbcontOne.length-1){
+         let valb= this.numbcontOne.slice(d,i+1)
+         valb = valb.join('')
+          this.numbcontTwo.push(parseInt(valb))
+          d = i+1
+            }
+          }
+
+        for(let i=0; i<this.numbcontTwo.length; i++){
+          if( this.numbcontTwo[i] === '/'){
+            let product = this.numbcontTwo[i-1]/this.numbcontTwo[i+1]
+            this.numbcontTwo.splice(i-1,3,product)
+          }
+        }
+        for(let i=0;i<this.numbcontTwo.length; i++){
+          if( this.numbcontTwo[i] === '*'){
+            let product = this.numbcontTwo[i-1] * this.numbcontTwo[i+1]
+            this.numbcontTwo.splice(i-1,3,product)
+          }
+        }
+        for (let i=0;i<this.numbcontTwo.length; i++){
+          if( this.numbcontTwo[i] === '+'){
+            let product = this.numbcontTwo[i-1] + this.numbcontTwo[i+1]
+            this.numbcontTwo.splice(i-1,3,product)
+          }
+        }
+
+        for (let i=0;i<this.numbcontTwo.length; i++){
+          if( this.numbcontTwo[i] === '-'){
+            let product = this.numbcontTwo[i-1]-this.numbcontTwo[i+1]
+            this.numbcontTwo.splice(i-1,3,product)
+          }
+        }
+
+        console.log(this.numbcontTwo)
+
+        let sw = document.getElementById(output);
+        sw.value = this.numbcontTwo.toString();
+
+      }
+
+      delete(output){
+        let sw = document.getElementById(output);
+        let outputVal = sw.value;
+        let val = outputVal.split('');
+        val = val.slice(0,val.length-1);
+        console.log(val)
+        val = val.join('')
+        sw.value = val;
+      }
+
+      reset(output){
+        let sw = document.getElementById(output);
+        sw.value = '';
+      }
+
+      clear(){
+        this.numbcontOne = [];
+        this.numbcontTwo = [];
+      }
+    }
+
+      calc = new calculator()
+      
+    num.forEach(num => num.addEventListener('click', () =>{
+      let newNumb = numHolder[num.id];
+      calc.inputNumber(newNumb,'outputText')
+      console.log(newNumb)
+    }))
+
+
+    operators.forEach(operator => operator.addEventListener('click', () =>{
+      
+      let opps = operator.innerText
+      calc.inputOpps(opps,'outputText')
+    }))
+     
+
+    let equator = document.getElementById('equal')
+    equator.addEventListener('click', ()=>{
+      calc.equal('outputText')
+      calc.clear()
+    })
+
+    let deletor = document.getElementById('delete')
+      deletor.addEventListener('click', ()=>{
+        calc.delete('outputText')
+      })
+    
+    let resetor = document.getElementById('reset')
+      resetor.addEventListener('click', ()=>{
+        calc.reset('outputText')
+        calc.clear()
+      })
+    
+
+
+
+    const switchOne = document.getElementById('switchbutone');
+    const switchTwo = document.getElementById('switchbuttwo');
+    const switchThree = document.getElementById('switchbutthree');
+    const bodyy = document.getElementById('bodyy');
+    const spanTwo = document.getElementById('spanTwo');
+    const outputText = document.getElementById('outputText');
+    const numbers = document.getElementById('numbers');
+    const numeric = document.getElementsByClassName('numeric');
+
+    switchOne.addEventListener('click', ()=>{
+    switchOne.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(6, 70%, 34%)');
+    switchTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    switchThree.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    bodyy.setAttribute('style', '--Very-dark-desaturated-blueOne:hsl(222, 26%, 31%)');
+    spanTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    outputText.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    numbers.setAttribute('style', '--Very-dark-desaturated-blueTwo:hsl(224, 28%, 35%)');
+    numeric.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    console.log('right!')
+    })
+
+    switchTwo.addEventListener('click', ()=>{
+      switchOne.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    switchTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(25, 99%, 27%)');
+    switchThree.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    bodyy.setAttribute('style', '--Very-dark-desaturated-blueOne:hsl(0, 0%, 90%)');
+    spanTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(0, 0%, 93%)');
+    outputText.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(0, 0%, 93%)');
+    numbers.setAttribute('style', '--Very-dark-desaturated-blueTwo:hsl(0, 5%, 81%)');
+    numeric.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+      
+    })
+
+    switchThree.addEventListener('click', ()=>{
+      switchOne.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    switchTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    switchThree.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(268, 71%, 12%)');
+    bodyy.setAttribute('style', '--Very-dark-desaturated-blueOne:hsl(268, 75%, 9%)');
+    spanTwo.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(268, 71%, 12%)');
+    outputText.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(268, 71%, 12%)');
+    numbers.setAttribute('style', '--Very-dark-desaturated-blueTwo:hsl(268, 71%, 12%)');
+    numeric.setAttribute('style', '--Very-dark-desaturated-blueThree:hsl(224, 36%, 15%)');
+    })
+
+
+     
+  </script>
+</body>
+</html>
